@@ -51,8 +51,8 @@ func (m *manager) transaction(ctx context.Context, opts pgx.TxOptions, fn db.Han
 		}
 	}()
 
-	if err := fn(ctx); err != nil {
-		err = errors.Wrap(err, "failed execute code inside transaction")
+	if handlerErr := fn(ctx); handlerErr != nil {
+		err = errors.Wrap(handlerErr, "failed execute code inside transaction")
 	}
 
 	return err

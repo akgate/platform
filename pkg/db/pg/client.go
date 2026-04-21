@@ -7,18 +7,22 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+var newPool = func(ctx context.Context, dsn string) (pool, error) {
+	return pgxpool.New(ctx, dsn)
+}
+
 type pgClient struct {
 	db db.DB
 }
 
 func NewPgClient(ctx context.Context, dsn string) (db.Client, error) {
-	db, err := pgxpool.New(ctx, dsn)
+	pool, err := newPool(ctx, dsn)
 	if err != nil {
 		return nil, err
 	}
 
 	return &pgClient{
-		db: &pg{dbc: db},
+		db: &pg{dbc: pool},
 	}, nil
 }
 

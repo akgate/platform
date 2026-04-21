@@ -13,8 +13,17 @@ type key string
 
 const TxKey key = "tx"
 
+type pool interface {
+	BeginTx(ctx context.Context, txOptions pgx.TxOptions) (pgx.Tx, error)
+	Exec(ctx context.Context, sql string, arguments ...any) (pgconn.CommandTag, error)
+	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+	Ping(ctx context.Context) error
+	Close()
+}
+
 type pg struct {
-	dbc *pgxpool.Pool
+	dbc pool
 }
 
 func NewDB(dbc *pgxpool.Pool) db.DB {
