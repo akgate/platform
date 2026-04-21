@@ -23,6 +23,10 @@ func NewDB(dbc *pgxpool.Pool) db.DB {
 	}
 }
 
+func (p *pg) BeginTx(ctx context.Context, txOptions pgx.TxOptions) (pgx.Tx, error) {
+	return p.dbc.BeginTx(ctx, txOptions)
+}
+
 func (p *pg) ExecContext(ctx context.Context, q db.Query, args ...interface{}) (pgconn.CommandTag, error) {
 	tx, ok := ctx.Value(TxKey).(pgx.Tx)
 

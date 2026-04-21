@@ -43,6 +43,7 @@ type Pinger interface {
 
 type DB interface {
 	SQLExecer
+	Transactor
 	Pinger
 	Close()
 }
