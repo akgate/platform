@@ -91,7 +91,7 @@ func TestReadCommittedStartsTransactionAndCommits(t *testing.T) {
 
 	handlerCalled := false
 
-	err := manager.ReadCommited(context.Background(), func(ctx context.Context) error {
+	err := manager.ReadCommitted(context.Background(), func(ctx context.Context) error {
 		handlerCalled = true
 
 		gotTx, ok := ctx.Value(platformpg.TxKey).(pgx.Tx)
@@ -107,7 +107,7 @@ func TestReadCommittedStartsTransactionAndCommits(t *testing.T) {
 	})
 
 	if err != nil {
-		t.Fatalf("ReadCommited() error = %v", err)
+		t.Fatalf("ReadCommitted() error = %v", err)
 	}
 
 	if !handlerCalled {
@@ -140,7 +140,7 @@ func TestReadCommittedRollsBackOnHandlerError(t *testing.T) {
 
 	expectedErr := errors.New("boom")
 
-	err := manager.ReadCommited(context.Background(), func(ctx context.Context) error {
+	err := manager.ReadCommitted(context.Background(), func(ctx context.Context) error {
 		return expectedErr
 	})
 
@@ -179,7 +179,7 @@ func TestReadCommittedReusesExistingTransaction(t *testing.T) {
 	ctx := platformpg.MakeContextTx(context.Background(), existingTx)
 	handlerCalled := false
 
-	err := manager.ReadCommited(ctx, func(ctx context.Context) error {
+	err := manager.ReadCommitted(ctx, func(ctx context.Context) error {
 		handlerCalled = true
 
 		gotTx, ok := ctx.Value(platformpg.TxKey).(pgx.Tx)
@@ -195,7 +195,7 @@ func TestReadCommittedReusesExistingTransaction(t *testing.T) {
 	})
 
 	if err != nil {
-		t.Fatalf("ReadCommited() error = %v", err)
+		t.Fatalf("ReadCommitted() error = %v", err)
 	}
 
 	if !handlerCalled {

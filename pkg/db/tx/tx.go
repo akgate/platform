@@ -10,10 +10,10 @@ import (
 )
 
 type manager struct {
-	db db.Transaction
+	db db.Transactor
 }
 
-func NewTxManager(db db.Transaction) db.TxManager {
+func NewTxManager(db db.Transactor) db.TransactionManager {
 	return &manager{db: db}
 }
 
@@ -58,7 +58,7 @@ func (m *manager) transaction(ctx context.Context, opts pgx.TxOptions, fn db.Han
 	return err
 }
 
-func (m *manager) ReadCommited(ctx context.Context, fn db.Handler) error {
+func (m *manager) ReadCommitted(ctx context.Context, fn db.Handler) error {
 	txOpts := pgx.TxOptions{IsoLevel: pgx.ReadCommitted}
 	return m.transaction(ctx, txOpts, fn)
 }
