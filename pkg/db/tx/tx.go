@@ -10,10 +10,10 @@ import (
 )
 
 type manager struct {
-	db db.Transactor
+	db db.Transaction
 }
 
-func NewTxManager(db db.Transactor) db.TxManager {
+func NewTxManager(db db.Transaction) db.TxManager {
 	return &manager{db: db}
 }
 

@@ -23,7 +23,7 @@ type Query struct {
 	QueryRaw string
 }
 
-type Transactor interface {
+type Transaction interface {
 	BeginTx(ctx context.Context, txOptions pgx.TxOptions) (pgx.Tx, error)
 }
 
@@ -43,7 +43,7 @@ type Pinger interface {
 
 type DB interface {
 	SQLExecer
-	Transactor
+	Transaction
 	Pinger
 	Close()
 }
